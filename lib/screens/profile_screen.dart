@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter/services.dart';
 import 'profile_setting.dart';
+import 'login_signin.dart';
 
 @Preview()
 Widget profileScreenPreview(){
@@ -133,6 +134,7 @@ class ProfileScreen extends StatelessWidget {
                 title: 'Notifications',
                 trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
                 cardColor: cardColor,
+                onTap: () {}
               ),
               const SizedBox(height: 12),
 
@@ -142,6 +144,14 @@ class ProfileScreen extends StatelessWidget {
                 title: 'Sign out',
                 trailing: const SizedBox.shrink(),
                 cardColor: cardColor,
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    (route) => false,
+                  );
+                },
+
               ),
               const SizedBox(height: 40),
             ],
@@ -298,30 +308,34 @@ class ProfileScreen extends StatelessWidget {
     required String title,
     required Widget trailing,
     required Color cardColor,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white10),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.white, size: 22),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white10),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.white, size: 22),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          trailing,
-        ],
+            trailing,
+          ],
+        ),
       ),
     );
   }
