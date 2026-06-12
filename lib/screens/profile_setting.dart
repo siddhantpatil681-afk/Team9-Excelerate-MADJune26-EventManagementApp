@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'feedback_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -174,7 +175,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.help_outline_outlined,
               title: 'Help & Support',
               subtitle: 'FAQs, report a bug, or contact us',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+               context,
+              MaterialPageRoute(builder: (context) => const FeedbackScreen()),
+               );
+              },
             ),
             _buildTile(
               icon: Icons.description_outlined,
