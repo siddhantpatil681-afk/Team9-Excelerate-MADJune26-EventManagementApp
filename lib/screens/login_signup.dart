@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'login_signin.dart';
-import 'profile_screen.dart';
+import 'home_screen.dart';
 
 
 
@@ -126,7 +126,7 @@ class SignUpScreen extends StatelessWidget {
                         
                   Navigator.push(
                context,
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
                );
 
                   },
