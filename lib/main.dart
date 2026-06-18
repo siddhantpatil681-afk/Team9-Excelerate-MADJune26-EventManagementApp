@@ -1,52 +1,54 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
-
-
+import 'package:provider/provider.dart';
+// ignore: unused_import
 import 'screens/login_signin.dart';
-
-
-
+import 'screens/theme_provider.dart';
+// ignore: unused_import
+import 'screens/main_shell.dart';
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const EventHubApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class EventHubApp extends StatelessWidget {
+  const EventHubApp({super.key});
 
-  @override
+ @override
   Widget build(BuildContext context) {
+    // Listen to the ThemeProvider changes
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF0A0A0A),
-
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: const Color(0xFF1E1E1E),
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-          prefixIconColor: Colors.grey,
-          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFF333333), width: 1),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFF2C2C2C), width: 1),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.white, width: 1),
-          ),
-        ),
-
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Color(0xFF0A0A0A),
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey,
+      title: 'Event App',
+      themeMode: themeProvider.themeMode, // Controlled by our provider
+      
+      // LIGHT THEME CONFIGURATION
+      theme: ThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: const Color(0xFFF5F5F7), // Light grey
+        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFFF5F5F7)),
+        cardColor: Colors.white,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black),
         ),
       ),
-      home: const LoginScreen(), 
+      
+      // DARK THEME CONFIGURATION
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF0A0A0A), // Your current black background
+        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF0A0A0A)),
+        cardColor: const Color(0xFF121212), // Your current card item color
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.white),
+        ),
+      ),
+      
+      home: const LoginScreen(),
     );
   }
 }

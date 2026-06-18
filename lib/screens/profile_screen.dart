@@ -1,170 +1,214 @@
-// profile_screen
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
 import 'package:flutter/services.dart';
+import 'home_screen.dart'; // Safe path access to share EventModel configurations
 import 'profile_setting.dart';
 import 'login_signin.dart';
+import 'registered_event_screen.dart';
 
-@Preview()
-Widget profileScreenPreview(){
-  return const MaterialApp(
-    home: ProfileScreen(),
-    );
-}
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileScreenBody extends StatelessWidget {
+  final List<EventModel> allEvents;
+  final Set<String> savedEventIds;
+  final Set<String> registeredEventIds;
+  final Function(int)? onTabChange;
+  final Function(String) onSaveToggle;
+final Function(String) onRegisterToggle;
+
+  const ProfileScreenBody({
+    super.key,
+    required this.allEvents,
+    required this.savedEventIds,
+    required this.registeredEventIds,
+    required this.onTabChange,
+    required this.onSaveToggle,
+    required this.onRegisterToggle,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Custom dark background color matching the design
-    const backgroundColor = Color(0xFF0A0A0A);
     const cardColor = Color(0xFF121212);
     const textGrey = Color(0xFF8E8E93);
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // Makes the bar blend in
-      statusBarIconBrightness: Brightness.light, // For Android (white icons)
-      statusBarBrightness: Brightness.dark, // For iOS (white icons)
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
     ));
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header: Title and Settings Button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'My Profile',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
+    // Filter matching datasets out of global configuration rules
+    final registeredEventsList = allEvents.where((e) => registeredEventIds.contains(e.id)).toList();
+    final previewEvents = registeredEventsList.take(4).toList();
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Header ──────────────────────────────────────────────────────
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'My Profile',
+                  style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
                   ),
-                    GestureDetector(
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: cardColor,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white10),
+                    ),
+                    child: const Icon(Icons.settings_outlined, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // ── Stats row (Dynamically updated counts) ───────────────────────
+            Row(
+              children: [
+                Expanded(child:
+                _buildStatCard(
+  '${registeredEventIds.length}',
+  'Registered',
+  cardColor,
   onTap: () {
+
+    final registeredEvents = allEvents
+        .where((event) => registeredEventIds.contains(event.id))
+        .toList();
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SettingsScreen()),
-    );
-  },
-  child: Container(
-    padding: const EdgeInsets.all(8),
-    decoration: BoxDecoration(
-      color: cardColor,
-      borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: Colors.white10),
-    ),
-    child: const Icon(Icons.settings_outlined, color: Colors.white),
-  ),
-),    
-                ],
-              ),
-              const SizedBox(height: 24),
-
-              // Statistics Row (Registered, Attended, Saved)
-              Row(
-                children: [
-                  Expanded(child: _buildStatCard('4', 'Registered', cardColor)),
-                  const SizedBox(width: 12),
-                  Expanded(child: _buildStatCard('2', 'Attended', cardColor)),
-                  const SizedBox(width: 12),
-                  Expanded(child: _buildStatCard('3', 'Saved', cardColor)),
-                ],
-              ),
-              const SizedBox(height: 32),
-
-              // Section: My Registered Events
-              const Text(
-                'MY REGISTERED EVENTS',
-                style: TextStyle(
-                  color: textGrey,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Event Card 1: Flutter Dev Conf
-              _buildEventCard(
-                icon: Icons.calendar_today_outlined,
-                title: 'Flutter Dev Conf',
-                date: 'Jun 22 • 10:00 AM',
-                location: 'BKC, Mumbai',
-                status: 'Confirmed',
-                statusColor: Colors.grey[800]!,
-                cardColor: cardColor,
-              ),
-              const SizedBox(height: 16),
-
-              // Event Card 2: Startup Pitch Night
-              _buildEventCard(
-                icon: Icons.mic_none_outlined,
-                title: 'Startup Pitch Night',
-                date: 'Jun 25 • 06:00 PM',
-                location: 'Powai, Mumbai',
-                status: 'Pending',
-                statusColor: Colors.grey[800]!,
-                cardColor: cardColor,
-              ),
-              const SizedBox(height: 32),
-
-              // Section: Account
-              const Text(
-                'ACCOUNT',
-                style: TextStyle(
-                  color: textGrey,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Account Option: Notifications
-              _buildAccountOption(
-                icon: Icons.notifications_none_outlined,
-                title: 'Notifications',
-                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
-                cardColor: cardColor,
-                onTap: () {}
-              ),
-              const SizedBox(height: 12),
-
-              // Account Option: Sign Out
-              _buildAccountOption(
-                icon: Icons.logout_outlined,
-                title: 'Sign out',
-                trailing: const SizedBox.shrink(),
-                cardColor: cardColor,
-                onTap: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    (route) => false,
-                  );
-                },
-
-              ),
-              const SizedBox(height: 40),
-            ],
-          ),
+      MaterialPageRoute(
+        builder: (_) => RegisteredEventsScreen(
+          events: registeredEvents,
+          savedEventIds: savedEventIds,
+          registeredEventIds: registeredEventIds,
+          onSaveToggle: onSaveToggle,
+          onRegisterToggle: onRegisterToggle,
         ),
       ),
-      
+    );
+  },
+)
+                ),
+                const SizedBox(width: 12),
+                Expanded(child: _buildStatCard('0', 'Attended', cardColor)),
+                const SizedBox(width: 12),
+                Expanded(
+  child: _buildStatCard(
+    '${savedEventIds.length}',
+    'Saved',
+    cardColor,
+    onTap: () {
+      onTabChange?.call(2); // Saved tab index
+    },
+  ),
+),
+              ],
+            ),
+            const SizedBox(height: 32),
+
+            // ── Registered events section ────────────────────────────────────
+            const Text(
+              'MY REGISTERED EVENTS',
+              style: TextStyle(color: textGrey, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+            ),
+            const SizedBox(height: 16),
+
+            if (registeredEventsList.isEmpty)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: cardColor,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white10),
+                ),
+                child: const Text(
+                  'You have not registered for any events yet.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: textGrey, fontSize: 14),
+                ),
+              )
+            else
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: previewEvents.length,
+                itemBuilder: (context, index) {
+                  final event = previewEvents[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: _buildEventCard(
+                      icon: Icons.calendar_today_outlined,
+                      title: event.title,
+                      date: event.date,
+                      location: event.location.split(',').last.trim(), // Pulls city clean
+                      status: 'Confirmed',
+                      statusColor: Colors.green[800]!,
+                      cardColor: cardColor,
+                    ),
+                  );
+                },
+              ),
+
+            const SizedBox(height: 32),
+
+            // ── Account section ──────────────────────────────────────────────
+            const Text(
+              'ACCOUNT',
+              style: TextStyle(color: textGrey, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+            ),
+            const SizedBox(height: 16),
+
+            _buildAccountOption(
+              icon: Icons.notifications_none_outlined,
+              title: 'Notifications',
+              trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
+              cardColor: cardColor,
+              onTap: () {},
+            ),
+            const SizedBox(height: 12),
+
+            _buildAccountOption(
+              icon: Icons.logout_outlined,
+              title: 'Sign out',
+              trailing: const SizedBox.shrink(),
+              cardColor: cardColor,
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  (route) => false,
+                );
+              },
+            ),
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
     );
   }
 
-  // Helper Widget for Stats
-  Widget _buildStatCard(String count, String label, Color cardColor) {
-    return Container(
+  Widget _buildStatCard(
+  String count,
+  String label,
+  Color cardColor, {
+  VoidCallback? onTap,
+}) {
+  return InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(16),
+    child: Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       decoration: BoxDecoration(
         color: cardColor,
@@ -192,10 +236,10 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
-  // Helper Widget for Event Cards
   Widget _buildEventCard({
     required IconData icon,
     required String title,
@@ -215,17 +259,15 @@ class ProfileScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Event Icon Container
           Container(
             padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: Colors.white, size: 24),
           ),
           const SizedBox(width: 16),
-          // Event Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,15 +278,11 @@ class ProfileScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    // Status Badge
+                    const SizedBox(width: 4),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
@@ -253,25 +291,15 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       child: Text(
                         status,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 6),
-                Text(
-                  date,
-                  style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 13),
-                ),
+                Text(date, style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 13)),
                 const SizedBox(height: 4),
-                Text(
-                  location,
-                  style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 13),
-                ),
+                Text(location, style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 13)),
               ],
             ),
           ),
@@ -280,7 +308,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Helper Widget for Account Menu List Rows
   Widget _buildAccountOption({
     required IconData icon,
     required String title,
@@ -304,11 +331,7 @@ class ProfileScreen extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
               ),
             ),
             trailing,
@@ -318,3 +341,5 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
+typedef ProfileScreen = ProfileScreenBody;
