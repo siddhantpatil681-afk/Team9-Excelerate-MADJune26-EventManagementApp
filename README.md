@@ -17,6 +17,13 @@ A Flutter-based mobile application that enables users to browse events, view eve
 - Dart
 - GitHub
 
+## Week 3 Updates
+- Connected Event Listing Screen to JSON data
+- Connected Event Details Screen to JSON data
+- Added Form Validation
+- Added Loading Indicators
+- Improved Navigation
+
 ## App Screenshots
 
 ### Sign In
