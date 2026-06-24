@@ -1,23 +1,8 @@
 # EventHub - Event Management App
 ## Team 9 - Excelerate
-![Flutter](https://img.shields.io/badge/Flutter-3.x-blue)
-![Dart](https://img.shields.io/badge/Dart-3.x-blue)
-![Status](https://img.shields.io/badge/Status-Completed-green)
+
 ### Project Overview
 EventHub is a Flutter-based event management application developed during the Excelerate SLU Mobile App Development Internship. The app allows users to browse events, view event details, register for events, submit feedback, and manage their profiles.
-
-## App Workflow Diagram
-Login
- ↓
-Home
- ↓
-Event Details
- ↓
-Registration
- ↓
-Feedback
- ↓
-Profile
 
 ### Features
 - User Authentication (Login & Sign Up)
@@ -29,23 +14,31 @@ Profile
 - JSON-based Data Integration
 - Navigation between screens
 
-### Technologies
+### Technologies Used
 - Flutter
 - Dart
 - JSON
 - Git & GitHub
 
-### Setup Instructions
-# Clone the repository:
-git clone <repository-link>
-# Open the project:
-cd Team9-Excelerate-MADJune26-EventManagementApp
-# Install dependencies:
-flutter pub get
-# Run the application:
-flutter run
+### App Workflow
+| Step | Screen |
+|------|---------|
+| 1 | Login |
+| 2 | Home |
+| 3 | Event Details |
+| 4 | Registration |
+| 5 | Feedback |
+| 6 | Profile |
 
-## App Screenshots
+### Setup Instructions
+```bash
+git clone https://github.com/siddhantpatil681-afk/Team9-Excelerate-MADJune26-EventManagementApp.git
+cd Team9-Excelerate-MADJune26-EventManagementApp
+flutter pub get
+flutter run
+```
+
+### App Screenshots
 
 ### Sign In
 <img width="397" height="837" alt="signin" src="https://github.com/user-attachments/assets/eb62506d-15b6-4c02-be4c-54cacfb581c3" />
@@ -76,7 +69,7 @@ flutter run
 ### Settings
 <img width="396" height="837" alt="setting" src="https://github.com/user-attachments/assets/9adf4f2c-6115-49dd-8799-6ec149865700" />
 
-## Future Enhancements
+### Future Enhancements
 - Push Notifications
 - Event Search and Filters
 - Dark/Light Theme Switching
@@ -86,36 +79,36 @@ flutter run
 - User Profile Editing
 - QR Code Based Event Check-in
 
-## Changelog
-# Week 1
+### Changelog
+#### Week 1
 Wireframes and UI planning.
-# Week 2
+#### Week 2
 Developed Login, Home, Program Listing, and Program Details screens.
-# Week 3
+#### Week 3
 Added JSON integration, form validation, and feedback functionality.
-# Week 4
+#### Week 4
 Final app polishing, testing, bug fixes, and documentation updates.
 
-## Contributors
+### Contributors
 | Name | Role |
 |------|------|
-| Siddhant Patil | Lead Developer, JSON Integration, App Finalization |
-| Ammar Ahmed | UI Improvements, Testing, Presentation Support |
-| Vyshitha Kodamanchili | GitHub Coordinator, Repository Management, Testing |
-| Natlie Pinto | Feedback Form Development, Documentation |
-| Ahmed Hatem Abd El Aziz | Presentation, Script Writing |
-| Pandeeti Meenakshi | Final Documentation and Report Preparation |
+| Siddhant Patil | Team Lead, Profile & Settings Development, App Intergration & Finalization |
+| Ammar Ahmed | Project Lead, UI Enhancements, Home Screen Development|
+| Vyshitha Kodamanchili | GitHub Coordinator, Repository Management, Login & Sign Up Development |
+| Natlie Pinto | Team Documentation,Feedback Screen Development, Testing Support |
+| Ahmed Hatem Abd El Aziz |Event Details Development, Presentation & Script Writing |
+| Pandeeti Meenakshi |Final Documentation, Report Preparation, Submission Support |
 
-## Demo Video
-# App Walkthrough Video:
+### Demo Video
+#### App Walkthrough Video:
 [Watch Demo] 
 
-## License
-This project was developed as part of the Excelerate SLU Mobile App Development Internship Program.
+### Project Status
+#### 🟢 Completed -
+Developed as part of the Excelerate Mobile App Development using Flutter Internship Program.
 
-## Acknowledgements
+### Acknowledgements
 Special thanks to Excelerate SLU, our mentors, and coordinators for their guidance and support throughout this internship.
 
-## Project Status
-Completed
-Developed as part of the Excelerate Mobile App Development using Flutter Internship Program.
+### License
+This project was developed as part of the Excelerate SLU Mobile App Development Internship Program.
