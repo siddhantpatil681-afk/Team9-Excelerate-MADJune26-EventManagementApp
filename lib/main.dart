@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-// ignore: unused_import
 import 'screens/login_signin.dart';
-import 'screens/theme_provider.dart';
 // ignore: unused_import
 import 'screens/main_shell.dart';
+
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: const EventHubApp(),
-    ),
-  );
+  runApp(const EventHubApp());
 }
+
 
 class EventHubApp extends StatelessWidget {
   const EventHubApp({super.key});
@@ -20,11 +14,11 @@ class EventHubApp extends StatelessWidget {
  @override
   Widget build(BuildContext context) {
     // Listen to the ThemeProvider changes
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    
 
     return MaterialApp(
       title: 'Event App',
-      themeMode: themeProvider.themeMode, // Controlled by our provider
+      themeMode: ThemeMode.dark,
       
       // LIGHT THEME CONFIGURATION
       theme: ThemeData(

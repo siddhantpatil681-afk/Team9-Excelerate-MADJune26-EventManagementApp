@@ -4,14 +4,20 @@ import 'home_screen.dart'; // Safe path access to share EventModel configuration
 import 'profile_setting.dart';
 import 'login_signin.dart';
 import 'registered_event_screen.dart';
+// ignore: unused_import
+import 'profile_edit.dart';
 
-class ProfileScreenBody extends StatelessWidget {
+// AFTER
+class ProfileScreenBody extends StatefulWidget {
   final List<EventModel> allEvents;
   final Set<String> savedEventIds;
   final Set<String> registeredEventIds;
   final Function(int)? onTabChange;
   final Function(String) onSaveToggle;
-final Function(String) onRegisterToggle;
+  final Function(String) onRegisterToggle;
+  final String userName;
+  final String userEmail;
+  final String userBio;
 
   const ProfileScreenBody({
     super.key,
@@ -21,12 +27,34 @@ final Function(String) onRegisterToggle;
     required this.onTabChange,
     required this.onSaveToggle,
     required this.onRegisterToggle,
+    this.userName = '',
+    this.userEmail = '',
+    this.userBio = '',
   });
 
   @override
+  State<ProfileScreenBody> createState() => _ProfileScreenBodyState();
+}
+
+class _ProfileScreenBodyState extends State<ProfileScreenBody> {
+  static const cardColor = Color(0xFF121212);
+  static const textGrey = Color(0xFF8E8E93);
+
+  late String _name;
+  late String _email;
+  late String _bio;
+
+  @override
+  void initState() {
+    super.initState();
+    _name = widget.userName;
+    _email = widget.userEmail;
+    _bio = widget.userBio;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    const cardColor = Color(0xFF121212);
-    const textGrey = Color(0xFF8E8E93);
+    
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -35,7 +63,7 @@ final Function(String) onRegisterToggle;
     ));
 
     // Filter matching datasets out of global configuration rules
-    final registeredEventsList = allEvents.where((e) => registeredEventIds.contains(e.id)).toList();
+    final registeredEventsList = widget.allEvents.where((e) => widget.registeredEventIds.contains(e.id)).toList();
     final previewEvents = registeredEventsList.take(4).toList();
 
     return SafeArea(
@@ -55,7 +83,20 @@ final Function(String) onRegisterToggle;
                 GestureDetector(
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                    MaterialPageRoute(builder: (_) =>  SettingsScreen(
+                      userName: _name,
+      userEmail: _email,
+      userBio: _bio,
+      onProfileUpdate: (name, bio, contact) {
+        setState(() {
+          _name = name;
+          _bio = bio;
+          _email = contact;
+        });
+      },
+
+                    )
+                    ),
                   ),
                   child: Container(
                     padding: const EdgeInsets.all(8),
@@ -76,13 +117,13 @@ final Function(String) onRegisterToggle;
               children: [
                 Expanded(child:
                 _buildStatCard(
-  '${registeredEventIds.length}',
+  '${widget.registeredEventIds.length}',
   'Registered',
   cardColor,
   onTap: () {
 
-    final registeredEvents = allEvents
-        .where((event) => registeredEventIds.contains(event.id))
+    final registeredEvents = widget.allEvents
+        .where((event) => widget.registeredEventIds.contains(event.id))
         .toList();
 
     Navigator.push(
@@ -90,10 +131,10 @@ final Function(String) onRegisterToggle;
       MaterialPageRoute(
         builder: (_) => RegisteredEventsScreen(
           events: registeredEvents,
-          savedEventIds: savedEventIds,
-          registeredEventIds: registeredEventIds,
-          onSaveToggle: onSaveToggle,
-          onRegisterToggle: onRegisterToggle,
+          savedEventIds: widget.savedEventIds,
+          registeredEventIds: widget.registeredEventIds,
+          onSaveToggle: widget.onSaveToggle,
+          onRegisterToggle: widget.onRegisterToggle,
         ),
       ),
     );
@@ -105,11 +146,11 @@ final Function(String) onRegisterToggle;
                 const SizedBox(width: 12),
                 Expanded(
   child: _buildStatCard(
-    '${savedEventIds.length}',
+    '${widget.savedEventIds.length}',
     'Saved',
     cardColor,
     onTap: () {
-      onTabChange?.call(2); // Saved tab index
+      widget.onTabChange?.call(2); // Saved tab index
     },
   ),
 ),
