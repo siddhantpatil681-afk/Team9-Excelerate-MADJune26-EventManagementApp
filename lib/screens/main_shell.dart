@@ -8,7 +8,14 @@ import 'event_details.dart';
 
 class MainShell extends StatefulWidget {
   final int initialIndex;
-  const MainShell({super.key, this.initialIndex = 0});
+  final String userName;
+  final String userEmail;
+  const MainShell({
+    super.key, 
+    this.initialIndex = 0,
+    this.userName = '',
+    this.userEmail = '',
+    });
 
   @override
   State<MainShell> createState() => _MainShellState();
@@ -16,8 +23,10 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   late int _currentIndex = 0;
+  late String _userName;
+  late String _userEmail;
   bool _isLoading = true;
-   bool _notificationsEnabled = true;
+  bool _notificationsEnabled = true;
 
    void _toggleNotifications() {
     setState(() {
@@ -34,6 +43,8 @@ class _MainShellState extends State<MainShell> {
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
+    _userName = widget.userName;
+    _userEmail = widget.userEmail;
     _loadEventsFromJSON();
   }
 
@@ -124,6 +135,9 @@ class _MainShellState extends State<MainShell> {
           allEvents: _allEvents,
           savedEventIds: _savedEventIds,
           registeredEventIds: _registeredEventIds,
+          userName: _userName,
+          userEmail: _userEmail,
+          userBio: '',
           onTabChange: (index){
             setState(() {
               _currentIndex = index;

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:eventhub/screens/theme_provider.dart';
-
+import 'profile_edit.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final String userName;
+  final String userEmail;
+  final String userBio;
+  final void Function(String name, String bio, String contact)? onProfileUpdate;
+
+  const SettingsScreen({
+    super.key,
+    this.userName = '',
+    this.userEmail = '',
+    this.userBio = '',
+    this.onProfileUpdate,
+    });
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -20,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -51,62 +60,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.person_outline,
               title: 'Edit Profile',
               subtitle: 'Change picture, name, bio, and contact info',
-              onTap: () {},
+              onTap: () async {
+                final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => EditProfileScreen(
+          initialName: widget.userName,
+          initialBio: widget.userBio,
+          initialContact: widget.userEmail,
+        ),
+      ),
+    );
+    if (result != null) {
+      widget.onProfileUpdate?.call(
+        result['name'] ?? widget.userName,
+        result['bio'] ?? widget.userBio,
+        result['contact'] ?? widget.userEmail,
+      );
+      if (context.mounted) Navigator.pop(context);
+    }
+              },
             ),
             const SizedBox(height: 24),
 
             // ── App preferences ──────────────────────────────────────────────
             _buildSectionHeader('APP PREFERENCES'),
             // Dark mode toggle
-            Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: cardColor,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white10),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.dark_mode_outlined,
-                      color: Colors.white, size: 22),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-    'Dark Mode',
-    style: TextStyle(
-      color: Colors.white,
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-    ),
-  ),
-  Text(
-    'Switch between light and dark theme',
-    style: TextStyle(
-      color: textGrey,
-      fontSize: 13,
-    ),
-  ),
-                   ],
-                    ),
-                  ),
-                  Switch(
-  value: themeProvider.isDarkMode,
-  activeThumbColor: Colors.white,
-  activeTrackColor: Colors.grey[800],
-  inactiveThumbColor: Colors.grey,
-  inactiveTrackColor: Colors.grey[300],
-  onChanged: (value) {
-    themeProvider.toggleTheme(value);
-  },
-)
-                ],
-              ),
-            ),
+            
             // Language selector
             Container(
               margin: const EdgeInsets.only(bottom: 12),

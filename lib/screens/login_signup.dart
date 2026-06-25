@@ -35,7 +35,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // Inputs are fully valid! Navigate to the main shell workspace
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const MainShell()),
+        MaterialPageRoute(builder: (context) =>  MainShell(
+          userName: _nameController.text.trim(),
+          userEmail: _emailController.text.trim(),
+        )),
         (route) => false,
       );
     }
