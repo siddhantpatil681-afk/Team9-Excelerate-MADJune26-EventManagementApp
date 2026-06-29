@@ -49,34 +49,42 @@ flutter run
 
 
 ### Home
-<img width="402" height="836" alt="home" src="https://github.com/user-attachments/assets/61c64ef8-5b77-4d05-ac36-4bd1e199d382" />
+<img width="407" height="837" alt="home" src="https://github.com/user-attachments/assets/3e51c3c1-b5e5-47a7-9c52-b33d8b221761" />
 
 
 ### Event Details
-<img width="392" height="832" alt="flutter event" src="https://github.com/user-attachments/assets/96a41895-8d4d-416a-8598-c13e1130bc8a" />
-<img width="396" height="835" alt="startup event" src="https://github.com/user-attachments/assets/dc5c765b-b5ea-4a0e-ba11-5c4e2bbd5889" />
-<img width="392" height="835" alt="photography event" src="https://github.com/user-attachments/assets/24d0db27-f43e-405e-a7c3-1ffa3176aa52" />
+<img width="382" height="832" alt="Event Details" src="https://github.com/user-attachments/assets/042def45-d48e-4357-a67e-f1c5396ac75c" />
+
+
+### Events Tab
+<img width="407" height="842" alt="Event Tab" src="https://github.com/user-attachments/assets/bcc26480-7dae-4836-b286-946dc3ebae96" />
 
 
 ### Feedback
 <img width="386" height="830" alt="feedback" src="https://github.com/user-attachments/assets/8cd5bc70-c434-43b1-90e7-c3de9af58c0d" />
 
 
+### Saved Events Tab
+<img width="402" height="837" alt="Saved Events" src="https://github.com/user-attachments/assets/a44cd0df-816f-4dac-afd2-9e85b2d00130" />
+
+
 ### Profile
-<img width="402" height="837" alt="profile" src="https://github.com/user-attachments/assets/b374af87-7555-4cde-a489-e09e66005bb7" />
+<img width="386" height="831" alt="Profile" src="https://github.com/user-attachments/assets/2e934292-29e4-479c-b3db-cb807ccd5296" />
 
 
 ### Settings
-<img width="396" height="837" alt="setting" src="https://github.com/user-attachments/assets/9adf4f2c-6115-49dd-8799-6ec149865700" />
+<img width="400" height="837" alt="Settings" src="https://github.com/user-attachments/assets/f392097a-066c-42ab-8188-68dc31c14f4c" />
+
+### Profile Update
+<img width="407" height="846" alt="Profile Update" src="https://github.com/user-attachments/assets/2e14aebb-4f25-41b9-8119-5aca86b2f4a8" />
+
+
 
 ### Future Enhancements
 - Push Notifications
-- Event Search and Filters
 - Dark/Light Theme Switching
-- Event Bookmarking
 - Firebase Authentication
 - Event Reminder Notifications
-- User Profile Editing
 - QR Code Based Event Check-in
 
 ### Changelog
