@@ -109,7 +109,7 @@ Final app polishing, testing, bug fixes, and documentation updates.
 
 ### Demo Video
 #### App Walkthrough Video:
-[Watch Demo] 
+[Watch Demo] https://drive.google.com/file/d/1I_IrLcBThAka-2Q6PJLuq9S1ERUhJdRc/view?usp=sharing
 
 ### Project Status
 #### 🟢 Completed -
